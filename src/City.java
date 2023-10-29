@@ -1,10 +1,12 @@
 import java.util.*;
+
 class ClickCounterThread extends Thread {
     static int count = 0;
 
-    void list_updated(){
+    void list_updated() {
         System.out.println("List has been updated !!!!  Thread : " + count++);
     }
+
     @Override
     public void run() {
         System.out.println("Wait for 1 second Thread has been started....");
@@ -15,30 +17,56 @@ class ClickCounterThread extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-            Main2.travel_menu();
+        Main2.travel_menu();
 
 
     }
 }
 
-class Resident {
+interface Market {
+    void buyItem(String item);
+
+    void add_item(String item, int price);
+
+    void display_item();
+}
+
+//--------------------------------------------------- abstraction
+abstract class Resident implements Market {
+
     String name;
     int experience;
     int price;
     String course_name;
-    Resident(){}
+
+    Resident() {
+    }
+
     ArrayList<String> ownedItems = new ArrayList<>();
     ArrayList<Integer> item_price_list = new ArrayList<>();
-    String person_name, person_address,place_location;
-    int  persona_age, ticket;
+    String person_name, person_address, place_location;
+    int persona_age, ticket;
 
-    void add_item(String item, int price){
+
+    @Override
+    public void add_item(String item, int price) {
         ownedItems.add(item);
         item_price_list.add(price);
-        ownedItems.add("Laptop");ownedItems.add("Bag");ownedItems.add("Book");
-        item_price_list.add(900);item_price_list.add(100);item_price_list.add(590);
+        ownedItems.add("Laptop");
+        ownedItems.add("Bag");
+        ownedItems.add("Book");
+        ownedItems.add("Pen");
+        ownedItems.add("mobile");
+        item_price_list.add(900);
+        item_price_list.add(100);
+        item_price_list.add(590);
+        item_price_list.add(90);
+        item_price_list.add(1000);
+
     }
-    void display_item() {
+
+    @Override
+    public void display_item() {
         System.out.println("═══════════════════════════════════");
         System.out.println("Sr.no  \tItems\t\t\tPrice");
         System.out.println();
@@ -53,8 +81,10 @@ class Resident {
         }
 
         System.out.println("═══════════════════════════════════");
+
     }
 
+    @Override
     public void buyItem(String item) {
         int amount = 0;
         int index = -1;
@@ -80,9 +110,11 @@ class Resident {
             System.out.println("Item not found in the list.");
             System.out.println("------------------------------------------------------------------");
         }
+
+
     }
 
-    void add_course(){
+    void add_course() {
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Enter your name : ");
         name = sc1.next();
@@ -94,6 +126,7 @@ class Resident {
         price = sc1.nextInt();
         System.out.println();
     }
+
     void enrollInCourse() {
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Enter instructor name : ");
@@ -103,10 +136,19 @@ class Resident {
         System.out.println("Enter the price of course : ");
         int C_price = sc1.nextInt();
     }
-    void displaycourse(){
-        System.out.println(course_name+" \t\t\t\t  "+price+" \t\t\t " +name+" \t\t\t ");
+
+    void displaycourse() {
+        if (course_name != null && price != 0 && name != null) {
+            System.out.println(course_name + " \t\t\t\t  " + price + " \t\t\t " + name + " \t\t\t ");
+        }
     }
 }
+
+class Details extends Resident {
+
+}
+
+// ---------------------------------------------------- encapsulation
 class City {
     private String city_name;
     private String location;
@@ -114,17 +156,18 @@ class City {
     private int age;
 
     private ArrayList<Resident> residents;
+
     public City() {
         residents = new ArrayList<>();
     }
-    public void addResident(Resident resident) {
-        residents.add(resident);
-    }
+//    public void addResident(Resident resident) {
+//        residents.add(resident);
+//    }
 
-    public ArrayList<Resident> getResidents() {
-        return residents;
-    }
-    public void add_population() {
+    //    public ArrayList<Resident> getResidents() {
+//        return residents;
+//    }
+    public void set_popluation() {
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Enter your name : ");
         Name = sc1.next();
@@ -135,27 +178,47 @@ class City {
         System.out.println("Enter your age : ");
         age = sc1.nextInt();
     }
-    public void display_population(){
+
+    public String getName() {
+        return Name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getCity_name() {
+        return city_name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void get_popluation() {
         System.out.println("═══════════════════════════════════════════\n");
-        System.out.println("Name    :     "+Name);
-        System.out.println("Address :     "+location);
-        System.out.println("City    :     " +city_name);
-        System.out.println("Age     :     "+age);
+        System.out.println("Name    :     " + getName());
+        System.out.println("Address :     " + getLocation());
+        System.out.println("City    :     " + getCity_name());
+        System.out.println("Age     :     " + getAge());
         System.out.println("\n═══════════════════════════════════════════\n");
     }
 
 }
-class TransportationSystem extends Resident{
+
+///////////////////////////////////// ------------------------- inheritance
+class TransportationSystem extends Resident {
     ArrayList<String> places_list = new ArrayList<>();
 
     ArrayList<Integer> prices_list = new ArrayList<>();
     ArrayList<String> timing_list = new ArrayList<>();
-   public void purchaseRailwayTicket(){
+
+    public void purchaseRailwayTicket() {
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Enter your name : ");
         person_name = sc1.next();
         System.out.println("Enter your address : ");
-        person_address= sc1.next();
+        person_address = sc1.next();
         System.out.println("Enter your age");
         persona_age = sc1.nextInt();
         System.out.println("Select location : ");
@@ -164,26 +227,28 @@ class TransportationSystem extends Resident{
         System.out.print("Enter ticket price : ");
         ticket = sc1.nextInt();
 
-        if( places_list.contains(place_location)){
+        if (places_list.contains(place_location)) {
             System.out.println("\n------------------------------------------------------------------");
             System.out.println("\n *** Thanks for buying ticket  *** \n");
-            System.out.println("     Location     : "+place_location);
-            System.out.println("     Ticket price : "+ticket);
+            System.out.println("     Location     : " + place_location);
+            System.out.println("     Ticket price : " + ticket);
             System.out.println("\n === Collect your Receipt === ");
             System.out.println("------------------------------------------------------------------");
             System.out.println();
 
-        }
-        else {
+        } else {
             System.out.println("\n *** Invalid information ***");
         }
     }
-    void add_places(String places, int price, String time){
+
+    void add_places(String places, int price, String time) {
         places_list.add(places);
         prices_list.add(price);
         timing_list.add(time);
 
+
     }
+
     //2
     void display_places() {
         System.out.println("\n════════════════════════════════════════════════════════════════════════  ");
@@ -196,20 +261,21 @@ class TransportationSystem extends Resident{
             String prices = String.format("%-20d", prices_list.get(i));
             String timing = String.format("%-12s", timing_list.get(i));
 
-            System.out.println(serialNo + places + "$"+prices + timing );
+            System.out.println(serialNo + places + "$" + prices + timing);
         }
 
         System.out.println("\n════════════════════════════════════════════════════════════════════════  \n");
     }
-    public void displayTravelDetails(){
+
+    public void displayTravelDetails() {
         System.out.println();
         System.out.println();
         System.out.println("═════════════════════════════════════════════════════   \n");
-        System.out.println("\n\tName     :     "+person_name);
-        System.out.println("\tAddress  :     "+person_address);
-        System.out.println("\tAge      :     "+persona_age);
-        System.out.println("\tLocation :     "+place_location);
-        System.out.println("\tPrice    :     "+ticket);
+        System.out.println("\n\tName     :     " + person_name);
+        System.out.println("\tAddress  :     " + person_address);
+        System.out.println("\tAge      :     " + persona_age);
+        System.out.println("\tLocation :     " + place_location);
+        System.out.println("\tPrice    :     " + ticket);
         System.out.println("\n═════════════════════════════════════════════════════");
         System.out.println();
 
@@ -217,7 +283,7 @@ class TransportationSystem extends Resident{
 }
 
 class Main2 {
-    static void menu(){
+    static void menu() {
 
         System.out.println("\nWelcome to the City Management System");
         System.out.println("=====================================");
@@ -234,14 +300,16 @@ class Main2 {
 
 
     }
-    static void training_center_menu(){
+
+    static void training_center_menu() {
         System.out.println();
         System.out.println("╔═══════════════════════════════════════════════════╗   ");
         System.out.println("║    1]. Enroll Course \t\t\t 2]. Sell Course    ║     ");
         System.out.println("╚═══════════════════════════════════════════════════╝");
         System.out.println();
     }
-    static void sub_menu(){
+
+    static void sub_menu() {
         System.out.println();
         System.out.println("╔═══════════════════════════════════════════════════╗   ");
         System.out.println("║    1]. SELL ITEMS \t\t\t 2]. BUY ITEMS      ║    ");
@@ -249,43 +317,43 @@ class Main2 {
         System.out.println();
 
     }
-    static void population_menu(){
+
+    static void population_menu() {
         System.out.println();
         System.out.println("╔═══════════════════════════════════════════════════╗   ");
         System.out.println("║    1].Add population \t\t\t 2]. Details        ║    ");
         System.out.println("╚═══════════════════════════════════════════════════╝");
         System.out.println();
     }
-    static void travel_menu(){
+
+    static void travel_menu() {
         System.out.println();
         System.out.println("╔═════════════════════════════════════════════════════════════════════════╗   ");
         System.out.println("║    1]. Railway \t\t\t 2]. Add places \t\t\t 3]. Receipt      ║    ");
         System.out.println("╚═════════════════════════════════════════════════════════════════════════╝");
         System.out.println();
     }
+
     public static void main(String[] args) {
 
-        City city1 = new City();
-        Resident resident1 = new Resident();
-        city1.addResident(resident1);
-        city1.getResidents();
-
+//        City city1 = new City();
+//        Details resident1 = new Details();
+//        city1.addResident(resident1);
 
 
         Main2.menu();
         Main2.call();
     }
 
-    public static void call(){
-
+    public static void call() {
+///////// --------------------------------- Polymorphism(static)
         TransportationSystem ts1 = new TransportationSystem();
 
         ts1.add_places("University_of_Sindh_Campus", 200, "10:00AM");
         ts1.add_places("Hyderabad_city_park", 100, "11:59AM");
         ts1.add_places("Kotri_barrage", 500, "03:00PM");
-
-        Resident resident1 = new Resident();
-        Resident[] resident2 = new Resident[100];
+        Details resident1 = new Details();
+        Details[] resident2 = new Details[100];
         int resi_count = 0;
         City city1[] = new City[100];
         int city_count = 0;
@@ -300,10 +368,9 @@ class Main2 {
             switch (choice) {
                 case 1:
                     while (true) {
-                        if(condition==false){
+                        if (condition == false) {
                             sub_menu();
-                        }
-                        else if(condition == true){
+                        } else if (condition == true) {
                             Main2.menu();
                             call();
                         }
@@ -353,10 +420,9 @@ class Main2 {
 
                 case 2:
                     while (true) {
-                        if(resident_condition==false){
+                        if (resident_condition == false) {
                             training_center_menu();
-                        }
-                        else if(resident_condition == true){
+                        } else if (resident_condition == true) {
                             Main2.menu();
                             call();
                         }
@@ -371,7 +437,7 @@ class Main2 {
 
                                 }
                                 System.out.println("════════════════════════════════════════════════════════════");
-                                resident2[resi_count] = new Resident();
+                                resident2[resi_count] = new Details();
                                 resident2[resi_count].enrollInCourse();
                                 resi_count++;
                                 System.out.println("\n *** Thanks for buying course *** ");
@@ -387,7 +453,7 @@ class Main2 {
                                 break;
 
                             case 2:
-                                resident2[resi_count] = new Resident();
+                                resident2[resi_count] = new Details();
                                 resident2[resi_count].add_course();
                                 ClickCounterThread thread2 = new ClickCounterThread();
                                 thread2.list_updated();
@@ -413,12 +479,11 @@ class Main2 {
 
                 case 3:
                     while (true) {
-                        if(customer_condition==false){
+                        if (customer_condition == false) {
                             ClickCounterThread thread1 = new ClickCounterThread();
                             thread1.start();
 
-                        }
-                        else if(customer_condition == true){
+                        } else if (customer_condition == true) {
                             Main2.menu();
                             call();
                         }
@@ -451,6 +516,7 @@ class Main2 {
                                 System.out.print("Enter the timing of place : ");
                                 String timing = sc1.next();
                                 ts1.add_places(place, price, timing);
+                                System.out.println("\n List has been updated...");
                                 System.out.println("\n1]. Back to Customer-menu");
                                 System.out.println("2]. Back to Main-menu");
                                 int customerChoice3 = sc1.nextInt();
@@ -482,10 +548,9 @@ class Main2 {
 
                 case 4:
                     while (true) {
-                        if(population_condition==false){
+                        if (population_condition == false) {
                             population_menu();
-                        }
-                        else if(population_condition == true){
+                        } else if (population_condition == true) {
                             Main2.menu();
                             call();
                         }
@@ -494,7 +559,7 @@ class Main2 {
                         switch (poulationChoice) {
                             case 1:
                                 city1[city_count] = new City();
-                                city1[city_count].add_population();
+                                city1[city_count].set_popluation();
                                 city_count++;
 
                                 System.out.println();
@@ -510,7 +575,7 @@ class Main2 {
                             case 2:
 
                                 for (int i = 0; i < city_count; i++) {
-                                    city1[i].display_population();
+                                    city1[i].get_popluation();
 
                                 }
                                 System.out.println();
